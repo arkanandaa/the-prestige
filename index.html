@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelompok 4 — Selected Works</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #ff4d00;
+        }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #080808;
+            color: #f0f0f0;
+            overflow-x: hidden;
+            cursor: none;
+        }
+        
+        a, button, input, textarea, [role="button"], .interactive {
+            cursor: none !important;
+        }
+
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+        .font-mono { font-family: 'Space Mono', monospace; }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #080808; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(240, 240, 240, 0.3);
+            color: transparent;
+        }
+        
+        .list-item-hover:hover .text-outline {
+            -webkit-text-stroke: 1px var(--accent);
+            color: var(--accent);
+        }
+
+        .reveal-image {
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            opacity: 0;
+            transform: scale(0.8) rotate(-5deg);
+        }
+
+        .list-item-hover:hover .reveal-image {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .marquee {
+            display: flex;
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(1000%); opacity: 0; }
+        }
+        .animate-scan {
+            animation: scan 4s linear infinite;
+        }
+
+        /* Simplified Custom Cursor Styles */
+        .cursor-dot {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+        }
+
+        .cursor-ring {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        /* Hover states for simplified cursor */
+        body.cursor-active .cursor-ring {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            mix-blend-mode: normal;
+        }
+        
+        body.cursor-active .cursor-dot {
+            background-color: var(--accent);
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
