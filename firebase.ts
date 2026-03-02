@@ -32,16 +32,9 @@ const firebaseConfig = {
   appId: "1:776984382253:web:36e10082773d2ea38f21a4"
 };
 
-let app;
-let db;
-
-try {
-  app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
-} catch (e) {
-  console.error("Firebase Initialization Failed. Check your firebaseConfig in firebase.ts");
-}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 export { db };
-export const portfoliosRef = db ? collection(db, "portfolios") : null;
+export const portfoliosRef = collection(db, "portfolios");
 export { doc, addDoc, setDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy };

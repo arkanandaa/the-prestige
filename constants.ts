@@ -25,7 +25,8 @@ export const PORTFOLIOS: PortfolioItem[] = [
       }
     ],
     education: 'B.S. in Computer Science, Universitas Indonesia',
-    projectsCount: 12
+    projectsCount: 12,
+    externalUrl: 'https://github.com/arka'
   },
   {
     id: '2',
@@ -44,7 +45,8 @@ export const PORTFOLIOS: PortfolioItem[] = [
       }
     ],
     education: 'B.A. in Visual Communication Design, ITB',
-    projectsCount: 8
+    projectsCount: 8,
+    externalUrl: 'https://behance.net/kasyfi'
   },
   {
     id: '3',
@@ -63,7 +65,8 @@ export const PORTFOLIOS: PortfolioItem[] = [
       }
     ],
     education: 'B.S. in Informatics Engineering, Telkom University',
-    projectsCount: 15
+    projectsCount: 15,
+    externalUrl: 'https://github.com/khalifa'
   },
   {
     id: '4',
@@ -82,7 +85,8 @@ export const PORTFOLIOS: PortfolioItem[] = [
       }
     ],
     education: 'B.S. in Mathematics, Gadjah Mada University',
-    projectsCount: 6
+    projectsCount: 6,
+    externalUrl: 'https://github.com/raffi'
   },
   {
     id: '5',
@@ -101,6 +105,7 @@ export const PORTFOLIOS: PortfolioItem[] = [
       }
     ],
     education: 'B.S. in Computer Engineering, Binus University',
-    projectsCount: 9
+    projectsCount: 9,
+    externalUrl: 'https://github.com/zahraan'
   }
 ];

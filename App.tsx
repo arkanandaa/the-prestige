@@ -8,7 +8,7 @@ import AIConsultant from './components/AIConsultant';
 import CustomCursor from './components/CustomCursor';
 import AdminPortal from './components/AdminPortal';
 import BackgroundVectors from './components/BackgroundVectors';
-import { db, portfoliosRef, onSnapshot, query, orderBy } from './firebase';
+import { db, portfoliosRef, onSnapshot, query, orderBy, doc, setDoc } from './firebase';
 import { PORTFOLIOS as INITIAL_PORTFOLIOS } from './constants';
 import { PortfolioItem } from './types';
 
@@ -34,8 +34,20 @@ const App: React.FC = () => {
           })) as PortfolioItem[];
           
           if (data.length === 0 && !isOfflineMode) {
-            // Jika database kosong, kita bisa isi dengan data awal
+            // Jika database kosong, kita bisa isi dengan data awal DAN upload ke Firestore
             setPortfolios(INITIAL_PORTFOLIOS);
+            
+            // Auto-sync initial data to Firestore
+            INITIAL_PORTFOLIOS.forEach(async (p) => {
+              try {
+                const { id, ...dataWithoutId } = p;
+                // Ensure externalUrl is included if it exists
+                await setDoc(doc(db, "portfolios", id), dataWithoutId);
+                console.log(`Synced ${p.name} to Firestore`);
+              } catch (err) {
+                console.error(`Error syncing ${p.name}:`, err);
+              }
+            });
           } else {
             setPortfolios(data);
           }

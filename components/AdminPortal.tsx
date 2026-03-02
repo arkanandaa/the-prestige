@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { PortfolioItem } from '../types';
 import { db, doc, addDoc, setDoc, deleteDoc, portfoliosRef } from '../firebase';
+import { PORTFOLIOS } from '../constants';
 
 interface Props {
   portfolios: PortfolioItem[];
@@ -25,7 +26,8 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
     skills: [],
     experience: [],
     education: '',
-    projectsCount: 0
+    projectsCount: 0,
+    externalUrl: ''
   });
 
   const handleLogin = (e: React.FormEvent) => {
@@ -51,6 +53,23 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
         await deleteDoc(docRef);
       } catch (err) {
         alert("Delete failed: " + err);
+      } finally {
+        setIsProcessing(false);
+      }
+    }
+  };
+
+  const handleSyncInitial = async () => {
+    if (confirm('This will sync all initial data from constants to the cloud archive. Existing records with same IDs will be updated. Continue?')) {
+      setIsProcessing(true);
+      try {
+        for (const p of PORTFOLIOS) {
+          const { id, ...dataWithoutId } = p;
+          await setDoc(doc(db, "portfolios", id), dataWithoutId);
+        }
+        alert('Initial data synchronized successfully.');
+      } catch (err) {
+        alert('Sync failed: ' + err);
       } finally {
         setIsProcessing(false);
       }
@@ -86,7 +105,8 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
         skills: skillsArray || [],
         experience: experienceArray || [],
         education: formData.education || '',
-        projectsCount: Number(formData.projectsCount) || 0
+        projectsCount: Number(formData.projectsCount) || 0,
+        externalUrl: formData.externalUrl || ''
       };
 
       if (editingId) {
@@ -114,7 +134,8 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
       skills: [],
       experience: [],
       education: '',
-      projectsCount: 0
+      projectsCount: 0,
+      externalUrl: ''
     });
   };
 
@@ -159,10 +180,19 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
   return (
     <div className="fixed inset-0 z-[100] bg-black flex flex-col md:flex-row overflow-hidden">
       <div className="w-full md:w-1/3 border-r border-white/10 flex flex-col h-full overflow-hidden">
-        <div className="p-10 border-b border-white/10 flex justify-between items-center bg-[#0a0a0a]">
-          <h2 className="font-serif italic text-2xl tracking-tighter">Archive Manager</h2>
-          <button onClick={onClose} className="font-mono text-[10px] bg-white text-black px-4 py-2 hover:bg-[#ff4d00] hover:text-white interactive">LOGOUT</button>
-        </div>
+          <div className="p-10 border-b border-white/10 flex justify-between items-center bg-[#0a0a0a]">
+            <h2 className="font-serif italic text-2xl tracking-tighter">Archive Manager</h2>
+            <div className="flex gap-2">
+              <button 
+                onClick={handleSyncInitial} 
+                disabled={isProcessing}
+                className="font-mono text-[9px] border border-white/10 text-slate-500 px-3 py-2 hover:border-[#ff4d00] hover:text-[#ff4d00] transition-all interactive disabled:opacity-20"
+              >
+                SYNC_INITIAL
+              </button>
+              <button onClick={onClose} className="font-mono text-[10px] bg-white text-black px-4 py-2 hover:bg-[#ff4d00] hover:text-white interactive">LOGOUT</button>
+            </div>
+          </div>
         
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
           {portfolios.map(p => (
@@ -338,6 +368,17 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
                 value={Array.isArray(formData.skills) ? formData.skills.join(', ') : formData.skills}
                 onChange={(e) => setFormData({...formData, skills: e.target.value})}
                 className="w-full bg-white/5 border-b border-white/10 p-4 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors uppercase"
+              />
+            </div>
+
+            <div>
+              <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-3 font-bold">External Portfolio URL</label>
+              <input 
+                type="url" 
+                placeholder="https://your-portfolio.com"
+                value={formData.externalUrl}
+                onChange={(e) => setFormData({...formData, externalUrl: e.target.value})}
+                className="w-full bg-white/5 border-b border-white/10 p-4 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors"
               />
             </div>
 

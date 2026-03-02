@@ -17,6 +17,7 @@ export interface PortfolioItem {
   experience: Experience[];
   education: string;
   projectsCount: number;
+  externalUrl?: string;
 }
 
 export interface ChatMessage {

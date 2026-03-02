@@ -39,6 +39,21 @@ const PortfolioDetail: React.FC<Props> = ({ portfolios }) => {
               <span className="font-mono text-[9px] text-[#ff4d00] uppercase tracking-[0.4em] font-bold block mb-4">Talent_Profile / {portfolio.id}</span>
               <h1 className="text-5xl md:text-7xl font-serif italic tracking-tighter leading-[0.85] mb-4">{portfolio.name}</h1>
               <p className="text-lg font-mono uppercase tracking-[0.2em] text-slate-400 mb-6">{portfolio.role}</p>
+              
+              {portfolio.externalUrl && (
+                <a 
+                  href={portfolio.externalUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-4 px-8 py-4 bg-[#ff4d00] text-white font-mono text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-white hover:text-black transition-all duration-300 mb-8 group rounded-sm shadow-lg shadow-[#ff4d00]/20"
+                >
+                  Personal Portfolio
+                  <svg className="w-3 h-3 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+              )}
+
               <div className="flex flex-wrap gap-2">
                 {portfolio.skills.map(skill => (
                   <span key={skill} className="px-2 py-0.5 bg-white/5 border border-white/10 font-mono text-[8px] uppercase tracking-widest text-slate-400">
