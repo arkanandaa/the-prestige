@@ -4,19 +4,13 @@ import React, { useEffect, useRef } from 'react';
 const CustomCursor: React.FC = () => {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const mousePos = useRef({ x: 0, y: 0 });
+  const dotPos = useRef({ x: 0, y: 0 });
+  const ringPos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const onMouseMove = (e: MouseEvent) => {
-      const { clientX: x, clientY: y } = e;
-      
-      if (dotRef.current) {
-        dotRef.current.style.left = `${x}px`;
-        dotRef.current.style.top = `${y}px`;
-      }
-      if (ringRef.current) {
-        ringRef.current.style.left = `${x}px`;
-        ringRef.current.style.top = `${y}px`;
-      }
+      mousePos.current = { x: e.clientX, y: e.clientY };
 
       const target = e.target as HTMLElement;
       const isInteractive = target.closest('a, button, input, .interactive, .list-item-hover');
@@ -28,35 +22,46 @@ const CustomCursor: React.FC = () => {
       }
     };
 
+    let animationFrameId: number;
+
+    const updateCursor = () => {
+      // Smooth interpolation
+      dotPos.current.x += (mousePos.current.x - dotPos.current.x) * 0.2;
+      dotPos.current.y += (mousePos.current.y - dotPos.current.y) * 0.2;
+      
+      ringPos.current.x += (mousePos.current.x - ringPos.current.x) * 0.1;
+      ringPos.current.y += (mousePos.current.y - ringPos.current.y) * 0.1;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${dotPos.current.x}px, ${dotPos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.transform = `translate3d(${ringPos.current.x}px, ${ringPos.current.y}px, 0) translate(-50%, -50%)`;
+      }
+
+      animationFrameId = requestAnimationFrame(updateCursor);
+    };
+
     window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
+    animationFrameId = requestAnimationFrame(updateCursor);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
   return (
     <>
       <div 
         ref={dotRef} 
-        className="fixed pointer-events-none z-[9999] hidden md:block mix-blend-difference"
-        style={{ transform: 'translate(-50%, -50%)' }}
+        className="fixed top-0 left-0 pointer-events-none z-[9999] hidden md:block mix-blend-difference"
       >
-        <div className="relative flex items-center justify-center">
-          {/* Small Center Dot */}
-          <div className="w-1 h-1 bg-white rounded-full shadow-[0_0_8px_rgba(255,77,0,0.8)]"></div>
-          
-          {/* Technical Crosshair Lines */}
-          <div className="absolute w-4 h-[1px] bg-white/40"></div>
-          <div className="absolute h-4 w-[1px] bg-white/40"></div>
-          
-          {/* Corner Accents */}
-          <div className="absolute -top-2 -left-2 w-1 h-1 border-t border-l border-[#ff4d00]"></div>
-          <div className="absolute -top-2 -right-2 w-1 h-1 border-t border-r border-[#ff4d00]"></div>
-          <div className="absolute -bottom-2 -left-2 w-1 h-1 border-b border-l border-[#ff4d00]"></div>
-          <div className="absolute -bottom-2 -right-2 w-1 h-1 border-b border-r border-[#ff4d00]"></div>
-        </div>
+        <div className="w-1.5 h-1.5 bg-[#ff4d00] rounded-full shadow-[0_0_10px_rgba(255,77,0,0.5)]"></div>
       </div>
       <div 
         ref={ringRef} 
-        className="cursor-ring hidden md:block border-[#ff4d00]/20 w-8 h-8" 
+        className="fixed top-0 left-0 pointer-events-none z-[9998] hidden md:block border border-[#ff4d00]/30 w-8 h-8 rounded-full transition-size duration-300" 
       />
     </>
   );
