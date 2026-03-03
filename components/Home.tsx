@@ -91,7 +91,7 @@ const Home: React.FC<Props> = ({
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 leading-relaxed max-w-lg bg-black/30 p-3 rounded-sm backdrop-blur-sm border border-white/5">
               {isOfflineMode 
                 ? "NOTICE: Running in Local Fallback Mode. Cloud Sync is disabled until Firebase is configured."
-                : "Our members are specialized in various digital disciplines. Managed via secure administrative protocols on Firebase."}
+                : "We provide access to elite digital talent—top-tier professionals who are masters of their craft, delivering exceptional results through technical precision and creative excellence."}
             </p>
           </div>
           

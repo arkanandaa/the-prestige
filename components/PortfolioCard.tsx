@@ -23,7 +23,7 @@ const PortfolioCard: React.FC<Props> = ({ portfolio, index }) => {
         className="group block relative bg-[#111] border border-white/5 rounded-xl overflow-hidden transition-all duration-500 hover:border-[#ff4d00]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)]"
       >
         {/* Image Container */}
-        <div className="aspect-[4/5] overflow-hidden relative">
+        <div className="aspect-[3/4] overflow-hidden relative">
           <img 
             src={portfolio.avatar} 
             alt={portfolio.name} 
@@ -32,34 +32,34 @@ const PortfolioCard: React.FC<Props> = ({ portfolio, index }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
           
           {/* Floating Role Tag */}
-          <div className="absolute top-4 left-4">
-             <span className="px-3 py-1 bg-black/80 backdrop-blur-md border border-white/10 text-[#ff4d00] font-mono text-[8px] uppercase tracking-widest rounded-full">
+          <div className="absolute top-3 left-3">
+             <span className="px-2 py-0.5 bg-black/80 backdrop-blur-md border border-white/10 text-[#ff4d00] font-mono text-[7px] uppercase tracking-widest rounded-full">
                {portfolio.role}
              </span>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6 relative">
-          <div className="flex justify-between items-start mb-4">
+        <div className="p-3 relative">
+          <div className="flex justify-between items-start mb-2">
             <div>
-              <h3 className="text-2xl font-serif italic tracking-tight group-hover:text-[#ff4d00] transition-colors">
+              <h3 className="text-lg font-serif italic tracking-tight group-hover:text-[#ff4d00] transition-colors">
                 {portfolio.name}
               </h3>
-              <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest mt-1">
-                Member_ID: {portfolio.id.slice(0, 8)}
+              <p className="font-mono text-[7px] text-slate-500 uppercase tracking-widest mt-0.5">
+                ID: {portfolio.id.slice(0, 8)}
               </p>
             </div>
-            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff4d00] group-hover:border-[#ff4d00] transition-all duration-500">
-              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-6 h-6 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-[#ff4d00] group-hover:border-[#ff4d00] transition-all duration-500">
+              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+          <div className="flex flex-wrap gap-1 pt-2 border-t border-white/5">
             {portfolio.skills.slice(0, 3).map(skill => (
-              <span key={skill} className="font-mono text-[8px] uppercase tracking-widest text-slate-400 bg-white/5 px-2 py-1 rounded-sm">
+              <span key={skill} className="font-mono text-[6px] uppercase tracking-widest text-slate-400 bg-white/5 px-1 py-0.5 rounded-sm">
                 {skill}
               </span>
             ))}
