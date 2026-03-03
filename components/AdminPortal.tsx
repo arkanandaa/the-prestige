@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { PortfolioItem } from '../types';
 import { db, doc, addDoc, setDoc, deleteDoc, portfoliosRef } from '../firebase';
 import { PORTFOLIOS } from '../constants';
@@ -17,7 +18,8 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState<Partial<PortfolioItem>>({
+  const [formData, setFormData] = useState<PortfolioItem>({
+    id: '',
     name: '',
     role: '',
     summary: '',
@@ -126,6 +128,7 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
   const resetForm = () => {
     setEditingId(null);
     setFormData({
+      id: '',
       name: '',
       role: '',
       summary: '',
@@ -141,44 +144,59 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
 
   if (!isLoggedIn) {
     return (
-      <div className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 backdrop-blur-sm">
-        <div className="w-full max-w-md border border-white/10 p-10 bg-[#080808]">
-          <div className="mb-10 flex justify-between items-center">
-            <h2 className="font-serif italic text-3xl">Portal Login</h2>
-            <button onClick={onClose} className="font-mono text-[10px] text-slate-500 hover:text-white interactive">ESC</button>
-          </div>
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div>
-              <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-2">Username</label>
-              <input 
-                type="text" 
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-white/5 border-b border-white/10 p-3 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors"
-                autoComplete="off"
-              />
+      <AnimatePresence>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 backdrop-blur-sm"
+        >
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-md border border-white/10 p-10 bg-[#080808]"
+          >
+            <div className="mb-10 flex justify-between items-center">
+              <h2 className="font-serif italic text-3xl">Portal Login</h2>
+              <button onClick={onClose} className="font-mono text-[10px] text-slate-500 hover:text-white interactive">ESC</button>
             </div>
-            <div>
-              <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-2">Password</label>
-              <input 
-                type="password" 
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-white/5 border-b border-white/10 p-3 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors"
-              />
-            </div>
-            {error && <p className="font-mono text-[9px] text-red-500 uppercase">{error}</p>}
-            <button type="submit" className="w-full bg-white text-black font-mono text-[10px] font-bold py-4 uppercase tracking-[0.2em] hover:bg-[#ff4d00] hover:text-white transition-all interactive">
-              Authenticate
-            </button>
-          </form>
-        </div>
-      </div>
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-2">Username</label>
+                <input 
+                  type="text" 
+                  value={username || ''}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="w-full bg-white/5 border-b border-white/10 p-3 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors"
+                  autoComplete="off"
+                />
+              </div>
+              <div>
+                <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-2">Password</label>
+                <input 
+                  type="password" 
+                  value={password || ''}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full bg-white/5 border-b border-white/10 p-3 font-mono text-sm focus:outline-none focus:border-[#ff4d00] transition-colors"
+                />
+              </div>
+              {error && <p className="font-mono text-[9px] text-red-500 uppercase">{error}</p>}
+              <button type="submit" className="w-full bg-white text-black font-mono text-[10px] font-bold py-4 uppercase tracking-[0.2em] hover:bg-[#ff4d00] hover:text-white transition-all interactive">
+                Authenticate
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black flex flex-col md:flex-row overflow-hidden">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 z-[100] bg-black flex flex-col md:flex-row overflow-hidden"
+    >
       <div className="w-full md:w-1/3 border-r border-white/10 flex flex-col h-full overflow-hidden">
           <div className="p-10 border-b border-white/10 flex justify-between items-center bg-[#0a0a0a]">
             <h2 className="font-serif italic text-2xl tracking-tighter">Archive Manager</h2>
@@ -403,7 +421,7 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
           </form>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

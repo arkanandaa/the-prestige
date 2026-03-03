@@ -1,35 +1,57 @@
 
 import React from 'react';
 
+import { motion } from 'motion/react';
+
 const Hero: React.FC = () => {
   return (
     <section id="home" className="relative min-h-[80vh] flex flex-col justify-center px-6 pt-24 pb-12">
       <div className="max-w-[1600px] mx-auto w-full">
-        <div className="flex justify-between items-start mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
+          className="flex justify-between items-start mb-8"
+        >
           <span className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#ff4d00] font-bold">Volume 01 — 2024 Release</span>
           <div className="hidden md:flex gap-8 font-mono text-[8px] text-slate-600 uppercase tracking-widest">
             <span>Lat: -6.2088</span>
             <span>Lng: 106.8456</span>
             <span>Enc: AES-256</span>
           </div>
-        </div>
+        </motion.div>
         
         <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
-          <div className="lg:col-span-9">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+            className="lg:col-span-9"
+          >
             <h1 className="text-[10vw] lg:text-[12vw] leading-[0.8] font-serif italic tracking-tighter">
               The <br />
               <span className="ml-[5vw] not-italic text-outline hover:text-white transition-all duration-700">Prestige</span>
             </h1>
-          </div>
+          </motion.div>
           
-          <div className="lg:col-span-3 pb-4">
+          <motion.div 
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
+            className="lg:col-span-3 pb-4"
+          >
             <p className="font-mono text-[10px] leading-relaxed text-slate-500 uppercase tracking-widest border-l border-[#ff4d00] pl-6">
-              Digital repository showcasing the intersection of technical excellence and creative vision. Curated by the fourth assembly.
+              The elite digital repository. We don't just build; we engineer legacies. Every talent here is a master of their craft, vetted for excellence and driven by innovation.
             </p>
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-16 flex justify-between items-center border-t border-white/10 pt-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="mt-16 flex justify-between items-center border-t border-white/10 pt-8"
+        >
           <div className="flex items-center gap-6">
             <div className="flex gap-2">
               <div className="w-1.5 h-1.5 bg-[#ff4d00] rounded-full animate-pulse"></div>
@@ -49,13 +71,18 @@ const Hero: React.FC = () => {
               <span className="hidden sm:inline">Explore_Archive</span>
             </a>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Background Decor */}
-      <div className="absolute top-1/2 right-0 -translate-y-1/2 -z-10 opacity-[0.02] select-none pointer-events-none">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.02 }}
+        transition={{ duration: 2 }}
+        className="absolute top-1/2 right-0 -translate-y-1/2 -z-10 select-none pointer-events-none"
+      >
           <span className="text-[50vw] font-bold leading-none">04</span>
-      </div>
+      </motion.div>
     </section>
   );
 };

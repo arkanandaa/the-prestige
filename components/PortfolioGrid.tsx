@@ -18,7 +18,7 @@ const PortfolioGrid: React.FC<Props> = ({ portfolios }) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 border-t border-white/5 pt-12">
+    <div className="flex flex-col border-t border-white/5 pt-12 space-y-2">
       {portfolios.map((portfolio, idx) => (
         <PortfolioCard 
           key={portfolio.id} 
