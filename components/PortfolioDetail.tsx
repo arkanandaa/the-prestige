@@ -52,14 +52,17 @@ const PortfolioDetail: React.FC<Props> = ({ portfolios }) => {
           {/* Header Section */}
           <div className="flex flex-col md:flex-row justify-between items-start gap-10 border-b border-white/10 pb-12 mb-12">
             <div className="flex-1">
-              <motion.span 
+              <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="font-mono text-[9px] text-[#ff4d00] uppercase tracking-[0.4em] font-bold block mb-4"
+                className="flex items-center gap-4 mb-6"
               >
-                Talent_Profile / {portfolio.id}
-              </motion.span>
+                <div className="h-[1px] w-8 bg-[#ff4d00]"></div>
+                <span className="font-mono text-[8px] text-white/40 uppercase tracking-[0.6em]">
+                  ARCHIVE_REF_{portfolio.id.slice(0,8)}
+                </span>
+              </motion.div>
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

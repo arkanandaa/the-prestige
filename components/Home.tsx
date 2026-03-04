@@ -84,8 +84,9 @@ const Home: React.FC<Props> = ({
       <section id="explore" className="max-w-[1600px] mx-auto px-6 py-24">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-10">
           <div className="max-w-xl">
-            <div className="inline-block px-3 py-1 border border-white/10 mb-4 bg-black/50 backdrop-blur-sm">
-               <span className="font-mono text-[9px] uppercase tracking-widest text-[#ff4d00]">Archive_Listing</span>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-[#ff4d00] font-bold">DIRECTORY_INDEX</span>
+              <div className="h-[1px] w-12 bg-white/10"></div>
             </div>
             <h2 className="text-6xl md:text-8xl font-serif italic mb-6 tracking-tighter leading-[0.85]">The Talent</h2>
             <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-slate-500 leading-relaxed max-w-lg bg-black/30 p-3 rounded-sm backdrop-blur-sm border border-white/5">
@@ -182,7 +183,7 @@ const Home: React.FC<Props> = ({
                       className="space-y-6 group"
                     >
                         <div className="flex items-center gap-4">
-                          <span className="font-mono text-[9px] text-[#ff4d00] uppercase tracking-widest font-bold">{feature.id} / {feature.title}</span>
+                          <span className="font-mono text-[8px] text-white/30 uppercase tracking-[0.4em]">{feature.id} // {feature.title}</span>
                           <div className="h-[1px] flex-grow bg-white/5 group-hover:bg-[#ff4d00]/30 transition-colors"></div>
                         </div>
                         <h4 className="text-3xl font-serif italic group-hover:text-[#ff4d00] transition-colors">{feature.heading}</h4>
@@ -208,11 +209,14 @@ const Home: React.FC<Props> = ({
                 viewport={{ once: true }}
                 className="flex flex-col justify-between py-2"
               >
+                  <div className="flex items-center gap-3 mb-8">
+                    <div className="w-1 h-1 bg-[#ff4d00] rounded-full"></div>
+                    <span className="font-mono text-[8px] text-slate-600 uppercase tracking-[0.6em]">EST_MMXXIV</span>
+                  </div>
                   <h3 className="text-4xl lg:text-7xl font-serif leading-[0.95] tracking-tighter">
                       We are the embodiment of <span className="italic">infinite curiosity</span>.
                   </h3>
                   <div className="mt-12 lg:mt-0">
-                      <span className="block font-mono text-[10px] text-slate-600 uppercase mb-4 tracking-[0.4em] font-bold">Est. MMXXIV</span>
                       <p className="text-lg lg:text-xl text-slate-400 font-light leading-relaxed max-w-md">
                           Our mission is simple: To provide inspiration through authentic, minimalist, and functional ICT works.
                       </p>
@@ -228,13 +232,13 @@ const Home: React.FC<Props> = ({
                   <div className="grid grid-cols-2 gap-8">
                       <div className="border-l border-white/10 pl-6 group">
                           <span className="block font-serif italic text-3xl mb-2 text-[#ff4d00] group-hover:scale-110 transition-transform origin-left inline-block">{portfolios.length}</span>
-                          <span className="block font-mono text-[8px] uppercase text-slate-500 tracking-widest">Records Found</span>
+                          <span className="block font-mono text-[7px] uppercase text-slate-500 tracking-[0.3em]">DATA_RECORDS</span>
                       </div>
                       <div className="border-l border-white/10 pl-6 group">
                           <span className="block font-serif italic text-3xl mb-2 text-[#ff4d00] group-hover:scale-110 transition-transform origin-left inline-block">
                             {isOfflineMode ? "Local" : "Cloud"}
                           </span>
-                          <span className="block font-mono text-[8px] uppercase text-slate-500 tracking-widest">Database Type</span>
+                          <span className="block font-mono text-[7px] uppercase text-slate-500 tracking-[0.3em]">STORAGE_TYPE</span>
                       </div>
                   </div>
                   <motion.div 

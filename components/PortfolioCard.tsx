@@ -32,9 +32,12 @@ const PortfolioCard: React.FC<Props> = ({ portfolio, index }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
           
           {/* Floating Role Tag */}
-          <div className="absolute top-3 left-3">
-             <span className="px-2 py-0.5 bg-black/80 backdrop-blur-md border border-white/10 text-[#ff4d00] font-mono text-[7px] uppercase tracking-widest rounded-full">
-               {portfolio.role}
+          <div className="absolute top-4 left-4 flex items-center gap-2">
+             <div className="w-1 h-1 bg-[#ff4d00] rounded-full shadow-[0_0_8px_#ff4d00]"></div>
+             <span className="font-mono text-[7px] uppercase tracking-[0.3em] text-white/90">
+               <span className="text-white/20 mr-1">[</span>
+               {portfolio.role.split('|')[0].trim()}
+               <span className="text-white/20 ml-1">]</span>
              </span>
           </div>
         </div>

@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { PortfolioItem } from '../types';
+import { PortfolioItem, Experience } from '../types';
 import { db, doc, addDoc, setDoc, deleteDoc, portfoliosRef } from '../firebase';
 import { PORTFOLIOS } from '../constants';
 
@@ -87,15 +87,21 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
         ? (formData.skills as string).split(',').map(s => s.trim()).filter(s => s !== '')
         : formData.skills;
 
-      // Handle experience if it's passed as a JSON string from the textarea
-      let experienceArray = formData.experience;
-      if (typeof experienceArray === 'string') {
-        try {
-          experienceArray = JSON.parse(experienceArray as string);
-        } catch (e) {
-          console.error("Experience JSON parse error", e);
-          experienceArray = [];
-        }
+      // Handle experience if it's passed as a formatted string from the textarea
+      let experienceArray: Experience[] = [];
+      if (typeof formData.experience === 'string') {
+        const lines = (formData.experience as string).split('\n').filter(line => line.trim() !== '');
+        experienceArray = lines.map(line => {
+          const parts = line.split('|').map(s => s.trim());
+          return {
+            year: parts[0] || '',
+            title: parts[1] || '',
+            company: parts[2] || '',
+            description: parts[3] || ''
+          };
+        });
+      } else {
+        experienceArray = formData.experience;
       }
 
       const dataToSave = {
@@ -368,14 +374,15 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
             </div>
 
             <div>
-              <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-3 font-bold">Professional Experience (JSON Format)</label>
+              <label className="block font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-3 font-bold">Professional Experience (Format: Year | Title | Company | Description)</label>
               <textarea 
                 rows={6}
-                placeholder='[{"year": "2022", "title": "Senior Dev", "company": "Tech", "description": "..."}]'
-                value={typeof formData.experience === 'string' ? formData.experience : JSON.stringify(formData.experience, null, 2)}
+                placeholder='2022 | Senior Developer | Tech Corp | Led the frontend team development...'
+                value={typeof formData.experience === 'string' ? formData.experience : (Array.isArray(formData.experience) ? formData.experience.map(exp => `${exp.year} | ${exp.title} | ${exp.company} | ${exp.description}`).join('\n') : '')}
                 onChange={(e) => setFormData({...formData, experience: e.target.value})}
                 className="w-full bg-white/5 border border-white/10 p-6 font-mono text-xs focus:outline-none focus:border-[#ff4d00] transition-colors resize-none"
               />
+              <p className="font-mono text-[8px] text-slate-700 mt-2 uppercase">One entry per line. Use "|" as separator.</p>
             </div>
 
             <div>

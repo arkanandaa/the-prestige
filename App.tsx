@@ -93,17 +93,27 @@ const App: React.FC = () => {
             id: doc.id
           })) as PortfolioItem[];
           
-          if (data.length === 0 && !isOfflineMode) {
-            // Jika database kosong, kita bisa isi dengan data awal DAN upload ke Firestore
+          // FORCE SYNC: If the data in Firestore doesn't match the new elite roles, overwrite it.
+          // This ensures the user sees the "Elite" updates immediately.
+          const eliteRoles = [
+            'Computer Science Scholar | Full-Stack Product Engineer | Creative Technologist',
+            'Physics Scholar | Computational Researcher | Technical Consultant',
+            'Engineering Student | Mine Planner | Reservoir Specialist',
+            'Actor, Producer & Creative Visionary',
+            'Entrepreneur | Businessman | Aviation Scholar'
+          ];
+          const needsEliteSync = data.some(p => !eliteRoles.includes(p.role));
+
+          if ((data.length === 0 || needsEliteSync) && !isOfflineMode) {
+            // Jika database kosong atau masih data lama, kita isi dengan data awal DAN upload ke Firestore
             setPortfolios(INITIAL_PORTFOLIOS);
             
             // Auto-sync initial data to Firestore
             INITIAL_PORTFOLIOS.forEach(async (p) => {
               try {
                 const { id, ...dataWithoutId } = p;
-                // Ensure externalUrl is included if it exists
                 await setDoc(doc(db, "portfolios", id), dataWithoutId);
-                console.log(`Synced ${p.name} to Firestore`);
+                console.log(`Elite Sync: ${p.name} updated in Firestore`);
               } catch (err) {
                 console.error(`Error syncing ${p.name}:`, err);
               }
