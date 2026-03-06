@@ -62,16 +62,16 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
   };
 
   const handleSyncInitial = async () => {
-    if (confirm('This will sync all initial data from constants to the cloud archive. Existing records with same IDs will be updated. Continue?')) {
+    if (confirm('WARNING: This will overwrite existing records with matching IDs and reset them to the default archive state. Continue?')) {
       setIsProcessing(true);
       try {
         for (const p of PORTFOLIOS) {
           const { id, ...dataWithoutId } = p;
           await setDoc(doc(db, "portfolios", id), dataWithoutId);
         }
-        alert('Initial data synchronized successfully.');
+        alert('Archive synchronized with local constants successfully.');
       } catch (err) {
-        alert('Sync failed: ' + err);
+        alert('Sync failed: ' + err + '\n\nPlease check your Firebase rules and connection.');
       } finally {
         setIsProcessing(false);
       }
@@ -80,6 +80,12 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.avatar) {
+      alert("Please provide a profile image (Upload or Link) before publishing.");
+      return;
+    }
+
     setIsProcessing(true);
     
     try {
@@ -109,7 +115,7 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
         role: formData.role || '',
         summary: formData.summary || '',
         description: formData.description || '',
-        avatar: formData.avatar || '',
+        avatar: formData.avatar,
         skills: skillsArray || [],
         experience: experienceArray || [],
         education: formData.education || '',
@@ -118,14 +124,18 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
       };
 
       if (editingId) {
+        console.log(`Updating record: ${editingId}`);
         const docRef = doc(db, "portfolios", editingId);
         await setDoc(docRef, dataToSave, { merge: true });
       } else {
+        console.log("Creating new record...");
         await addDoc(portfoliosRef, dataToSave);
       }
+      alert("Archive updated successfully.");
       resetForm();
     } catch (err) {
-      alert("Save failed: " + err);
+      console.error("Save error:", err);
+      alert("Save failed: " + err + "\n\nTip: If you uploaded a large image, try a smaller file (under 800KB) or use a direct link.");
     } finally {
       setIsProcessing(false);
     }
@@ -299,6 +309,10 @@ const AdminPortal: React.FC<Props> = ({ portfolios, onClose }) => {
                           onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
+                              if (file.size > 800000) {
+                                alert("IMAGE_SIZE_EXCEEDED: Please use a file smaller than 800KB for cloud synchronization.");
+                                return;
+                              }
                               const reader = new FileReader();
                               reader.onloadend = () => {
                                 setFormData({...formData, avatar: reader.result as string});

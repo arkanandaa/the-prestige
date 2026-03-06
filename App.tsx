@@ -93,32 +93,32 @@ const App: React.FC = () => {
             id: doc.id
           })) as PortfolioItem[];
           
-          // FORCE SYNC: If the data in Firestore doesn't match the new elite roles, overwrite it.
-          // This ensures the user sees the "Elite" updates immediately.
-          const eliteRoles = [
-            'Computer Science Scholar | Full-Stack Product Engineer | Creative Technologist',
-            'Physics Scholar | Computational Researcher | Technical Consultant',
-            'Engineering Student | Mine Planner | Reservoir Specialist',
-            'Actor, Producer & Creative Visionary',
-            'Entrepreneur | Businessman | Aviation Scholar'
-          ];
-          const needsEliteSync = data.some(p => !eliteRoles.includes(p.role));
-
-          if ((data.length === 0 || needsEliteSync) && !isOfflineMode) {
-            // Jika database kosong atau masih data lama, kita isi dengan data awal DAN upload ke Firestore
+          if (data.length === 0 && !isOfflineMode) {
+            // If database is empty, seed it with initial data
+            console.log("Database empty. Seeding initial archive...");
             setPortfolios(INITIAL_PORTFOLIOS);
             
-            // Auto-sync initial data to Firestore
+            // Seed initial data to Firestore
             INITIAL_PORTFOLIOS.forEach(async (p) => {
               try {
                 const { id, ...dataWithoutId } = p;
                 await setDoc(doc(db, "portfolios", id), dataWithoutId);
-                console.log(`Elite Sync: ${p.name} updated in Firestore`);
+                console.log(`Seed: ${p.name} added to Firestore`);
               } catch (err) {
-                console.error(`Error syncing ${p.name}:`, err);
+                console.error(`Error seeding ${p.name}:`, err);
               }
             });
           } else {
+            // MIGRATION: Check if Arka's URL needs updating in Firestore
+            const arka = data.find(p => p.name.includes('Arka Ananda'));
+            if (arka && arka.externalUrl === 'https://github.com/arka') {
+              console.log("Migrating Arka's Portfolio URL...");
+              const docRef = doc(db, "portfolios", arka.id);
+              setDoc(docRef, { externalUrl: 'https://arka-ochre.vercel.app' }, { merge: true })
+                .then(() => console.log("Arka's URL migrated successfully"))
+                .catch(err => console.error("Migration failed:", err));
+            }
+            
             setPortfolios(data);
           }
           setIsLoading(false);

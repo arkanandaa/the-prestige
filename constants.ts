@@ -32,7 +32,7 @@ export const PORTFOLIOS: PortfolioItem[] = [
     ],
     education: 'B.S. in Computer Science, Universitas Indonesia (UI)',
     projectsCount: 24,
-    externalUrl: 'https://github.com/arka'
+    externalUrl: 'https://arka-ochre.vercel.app'
   },
   {
     id: '2',
